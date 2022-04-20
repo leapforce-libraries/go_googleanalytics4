@@ -1,7 +1,6 @@
 package googleanalytics
 
 import (
-	"fmt"
 	"net/http"
 
 	errortools "github.com/leapforce-libraries/go_errortools"
@@ -19,7 +18,7 @@ type Account struct {
 }
 
 type GetAccountConfig struct {
-	AccountId string
+	Account string
 }
 
 func (service *Service) GetAccount(config *GetAccountConfig) (*Account, *errortools.Error) {
@@ -31,7 +30,7 @@ func (service *Service) GetAccount(config *GetAccountConfig) (*Account, *errorto
 
 	requestConfig := go_http.RequestConfig{
 		Method:        http.MethodGet,
-		Url:           service.urlAdmin(fmt.Sprintf("accounts/%s", config.AccountId)),
+		Url:           service.urlAdmin(config.Account),
 		ResponseModel: &account,
 	}
 

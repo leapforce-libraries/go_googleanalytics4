@@ -280,12 +280,12 @@ type QuotaStatus struct {
 	Remaining int64 `json:"remaining"`
 }
 
-func (service *Service) RunReport(propertyId string, reportRequest *ReportRequest) (*RunReportResponse, *errortools.Error) {
+func (service *Service) RunReport(property string, reportRequest *ReportRequest) (*RunReportResponse, *errortools.Error) {
 	runReportResponse := RunReportResponse{}
 
 	requestConfig := go_http.RequestConfig{
 		Method:        http.MethodPost,
-		Url:           service.urlData(fmt.Sprintf("properties/%s:runReport", propertyId)),
+		Url:           service.urlData(fmt.Sprintf("%s:runReport", property)),
 		BodyModel:     reportRequest,
 		ResponseModel: &runReportResponse,
 	}

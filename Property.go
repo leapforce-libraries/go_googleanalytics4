@@ -16,18 +16,18 @@ type PropertyResponse struct {
 }
 
 type Property struct {
-	Name             string                 `json:"name"`
-	CreateTime       g_types.DateTimeString `json:"createTime"`
-	UpdateTime       g_types.DateTimeString `json:"updateTime"`
-	Parent           string                 `json:"parent"`
-	DisplayName      string                 `json:"displayName"`
-	IndustryCategory IndustryCategory       `json:"industryCategory"`
-	TimeZone         string                 `json:"timeZone"`
-	CurrencyCode     string                 `json:"currencyCode"`
-	ServiceLevel     ServiceLevel           `json:"serviceLevel"`
-	DeleteTime       g_types.DateTimeString `json:"deleteTime"`
-	ExpireTime       g_types.DateTimeString `json:"expireTime"`
-	Account          string                 `json:"account"`
+	Name             string                  `json:"name"`
+	CreateTime       g_types.DateTimeString  `json:"createTime"`
+	UpdateTime       g_types.DateTimeString  `json:"updateTime"`
+	Parent           string                  `json:"parent"`
+	DisplayName      string                  `json:"displayName"`
+	IndustryCategory IndustryCategory        `json:"industryCategory"`
+	TimeZone         string                  `json:"timeZone"`
+	CurrencyCode     string                  `json:"currencyCode"`
+	ServiceLevel     ServiceLevel            `json:"serviceLevel"`
+	DeleteTime       *g_types.DateTimeString `json:"deleteTime"`
+	ExpireTime       *g_types.DateTimeString `json:"expireTime"`
+	Account          string                  `json:"account"`
 }
 
 type IndustryCategory string
@@ -71,14 +71,16 @@ const (
 )
 
 type ListPropertiesConfig struct {
-	Filter struct {
-		Parent          *string
-		Ancestor        *string
-		FirebaseProject *string
-	}
+	Filter      ListPropertiesConfigFilter
 	PageSize    *int64
 	PageToken   *string
 	ShowDeleted *bool
+}
+
+type ListPropertiesConfigFilter struct {
+	Parent          *string
+	Ancestor        *string
+	FirebaseProject *string
 }
 
 func (service *Service) ListProperties(config *ListPropertiesConfig) (*[]Property, *errortools.Error) {
@@ -91,7 +93,7 @@ func (service *Service) ListProperties(config *ListPropertiesConfig) (*[]Propert
 	values := url.Values{}
 
 	if config.Filter.Parent != nil {
-		values.Set("filter", fmt.Sprintf("parent%s", *config.Filter.Parent))
+		values.Set("filter", fmt.Sprintf("parent:%s", *config.Filter.Parent))
 	}
 	if config.Filter.Ancestor != nil {
 		values.Set("filter", fmt.Sprintf("ancestor:%s", *config.Filter.Ancestor))
